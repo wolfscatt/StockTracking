@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34525.116
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{FD5DC38D-837B-4D27-B947-EB0480FD6249}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Business", "Business\Business.csproj", "{5444ADE4-AE5C-4193-848A-F30C2D7F49C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfLibrary", "WpfLibrary\WpfLibrary.csproj", "{D8047BD2-E415-41DD-9C80-1DFCC3807439}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FD5DC38D-837B-4D27-B947-EB0480FD6249}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD5DC38D-837B-4D27-B947-EB0480FD6249}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD5DC38D-837B-4D27-B947-EB0480FD6249}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD5DC38D-837B-4D27-B947-EB0480FD6249}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5444ADE4-AE5C-4193-848A-F30C2D7F49C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5444ADE4-AE5C-4193-848A-F30C2D7F49C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5444ADE4-AE5C-4193-848A-F30C2D7F49C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5444ADE4-AE5C-4193-848A-F30C2D7F49C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8047BD2-E415-41DD-9C80-1DFCC3807439}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8047BD2-E415-41DD-9C80-1DFCC3807439}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8047BD2-E415-41DD-9C80-1DFCC3807439}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8047BD2-E415-41DD-9C80-1DFCC3807439}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {83386631-E889-4A24-AADA-3A614CD3D811}
+	EndGlobalSection
+EndGlobal
