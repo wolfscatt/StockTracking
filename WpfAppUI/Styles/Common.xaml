@@ -1,0 +1,15 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <!--Buraya Renk kodları falan gelecek -->
+    <Color x:Key="ColorPrimary1">#f4143f</Color>
+    <Color x:Key="ColorPrimary2">#eb363e</Color>
+
+    <Color x:Key="ButtonColorPrimary">#ffb11e</Color>
+
+    <!--Brushes -->
+    <SolidColorBrush x:Key="BrushPrimary1" Color="{StaticResource ColorPrimary1}" />
+    <SolidColorBrush x:Key="BrushPrimary2" Color="{StaticResource ColorPrimary2}" />
+    <SolidColorBrush x:Key="ButtonBrushPrimary" Color="{StaticResource ButtonColorPrimary}" />
+
+</ResourceDictionary>

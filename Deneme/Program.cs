@@ -1,15 +1,5 @@
-﻿using Business.Abstract;
-using Business.Concrete.DependencyResolvers.Ninject;
-using Business.Concrete.Managers;
-using Business.Concrete.ValidationRules.FluentValidation;
-using Castle.DynamicProxy;
-using Core.Aspects.CastleDynamicProxy.ValidationAspects;
-using DataAccess.Abstract;
+﻿using Business.Concrete.Managers;
 using DataAccess.Concrete.EntityFramework;
-using DataAccess.Concrete.NHibarnate;
-using DataAccess.Concrete.NHibarnate.Helpers;
-using Entities.Concrete;
-using Ninject;
 
 /* Entity Framework Core
 EfProductDal productDal = new EfProductDal();
@@ -49,5 +39,38 @@ Product product = new Product()
 var addedProduct = productManager.Add(product);
 Console.WriteLine(addedProduct);
 */
+ProductTest();
+
+static void CategoryTest()
+{
+    CategoryManager categoryManager = new CategoryManager(new EfCategoryDal());
+    foreach (var category in categoryManager.GetList().Data)
+    {
+        Console.WriteLine(category.CategoryName);
+    }
+}
+
+static void ProductTest()
+{
+    ProductManager productManager = new ProductManager(new EfProductDal()
+        , new CategoryManager(new EfCategoryDal()));
+
+    var result = productManager.GetList();
+
+    if (result.Success == true)
+    {
+        foreach (var product in result.Data)
+        {
+            Console.WriteLine(product);
+            Console.WriteLine("--------------------------");
+        }
+    }
+    else
+    {
+        Console.WriteLine(result.Message);
+    }
+
+
+}
 
 Console.ReadKey();

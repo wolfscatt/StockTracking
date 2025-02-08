@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Core.Utilities.IoC;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Caching;
@@ -10,10 +13,14 @@ namespace Core.CrossCuttingConcerns.Caching.Microsoft
 {
     public class MemoryCacheManager : ICacheService
     {
-        protected ObjectCache cache => MemoryCache.Default;
+        private IMemoryCache _cache;
+        public MemoryCacheManager()
+        {
+            _cache = ServiceTool.ServiceProvider.GetService<IMemoryCache>();
+        }
         public T Get<T>(string key)
         {
-            return (T)cache[key];
+            return _cache.Get<T>(key);
         }
         public void Add(string key, object data, int duration = 60)
         {
@@ -22,38 +29,42 @@ namespace Core.CrossCuttingConcerns.Caching.Microsoft
                 return;
             }
 
-            var policy = new CacheItemPolicy
-            {
-                AbsoluteExpiration = DateTime.Now + TimeSpan.FromMinutes(duration)
-            };
-
-            cache.Add(new CacheItem(key, data), policy);
+            _cache.Set(key, data, TimeSpan.FromMinutes(duration));
         }
         public bool IsAdd(string key)
         {
-            return cache.Contains(key);
+            return _cache.TryGetValue(key, out _);
         }
 
         public void Remove(string key)
         {
-            cache.Remove(key);
+            _cache.Remove(key);
         }
 
         public void RemoveByPattern(string pattern)
         {
+            var cacheEntriesCollectionDefinition = typeof(MemoryCache).GetProperty("EntriesCollection", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            var cacheEntriesCollection = cacheEntriesCollectionDefinition.GetValue(_cache) as dynamic;
+            List<ICacheEntry> cacheCollectionValues = new List<ICacheEntry>();
+
+            foreach (var cacheItem in cacheEntriesCollection)
+            {
+                ICacheEntry cacheItemValue = cacheItem.GetType().GetProperty("Value").GetValue(cacheItem, null);
+                cacheCollectionValues.Add(cacheItemValue);
+            }
+
             var regex = new Regex(pattern, RegexOptions.Singleline | RegexOptions.Compiled | RegexOptions.IgnoreCase);
-            var keysToRemove = cache.Where(d => regex.IsMatch(d.Key)).Select(d => d.Key).ToList();
+            var keysToRemove = cacheCollectionValues.Where(d => regex.IsMatch(d.Key.ToString())).Select(d => d.Key).ToList();
+
             foreach (var key in keysToRemove)
             {
-                Remove(key);
+                _cache.Remove(key);
             }
         }
-        public void Clear()
+
+        public object Get(string key)
         {
-            foreach (var item in cache)
-            {
-                Remove(item.Key);
-            }
+            return _cache.Get(key);
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Autofac;
+using Business.Abstract;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,15 +13,16 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using WpfAppUI.ViewModels;
 
-namespace WpfLibrary
+namespace WpfAppUI.Views
 {
     /// <summary>
-    /// Interaction logic for Window1.xaml
+    /// Interaction logic for ProductView.xaml
     /// </summary>
-    public partial class Window1 : Window
+    public partial class ProductView : UserControl
     {
-        public Window1()
+        public ProductView()
         {
             InitializeComponent();
         }

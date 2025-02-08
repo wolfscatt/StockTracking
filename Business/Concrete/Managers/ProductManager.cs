@@ -1,10 +1,16 @@
 ﻿using Business.Abstract;
-using Business.Concrete.ValidationRules.FluentValidation;
+using Business.Constants;
+using Business.ValidationRules.FluentValidation;
 using Core.Aspects.CastleDynamicProxy.CacheAspects;
+using Core.Aspects.CastleDynamicProxy.LogAspects;
+using Core.Aspects.CastleDynamicProxy.PerformanceAspect;
 using Core.Aspects.CastleDynamicProxy.TransactionAspects;
 using Core.Aspects.CastleDynamicProxy.ValidationAspects;
 using Core.CrossCuttingConcerns.Caching.Microsoft;
+using Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;
 using Core.CrossCuttingConcerns.Validation.FluentValidation;
+using Core.Utilities.Business;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using System;
@@ -19,53 +25,96 @@ namespace Business.Concrete.Managers
     public class ProductManager : IProductService
     {
         private IProductDal _productDal;
-        public ProductManager()
-        {
-            
-        }
+        private ICategoryService _categoryService;
 
-        public ProductManager(IProductDal productDal)
+        public ProductManager(IProductDal productDal, ICategoryService categoryService)
         {
             _productDal = productDal;
-        }
-
-        [CacheAspect(typeof(MemoryCacheManager))]
-        public virtual List<Product> GetAll()
-        {
-            return _productDal.GetAll();
-        }
-        public Product GetById(int Id)
-        {
-            return _productDal.Get(p => p.ProductId == Id);
+            _categoryService = categoryService;
         }
 
         [FluentValidationAspect(typeof(ProductValidator), Priority = 1)]
-        [CacheRemoveAspect(typeof(MemoryCacheManager), Priority = 2)]
-        public virtual Product Add(Product product)
+        [CacheRemoveAspect("IProductService.Get")]
+        public IResult Add(Product product)
         {
-            //ValidatorTool.FluentValidate(new ProductValidator(), product);
-            return _productDal.Add(product);
-        }
+            IResult result = BusinessRules.Run(CheckIfProductNameExists(product.ProductName), CheckIfCategoryIsEnabled());
 
+            if (result != null)
+            {
+                return result;
+            }
+            _productDal.Add(product);
+            return new SuccessResult(Messages.ProductAdded);
+        }
         [FluentValidationAspect(typeof(ProductValidator), Priority = 1)]
-        [CacheRemoveAspect(typeof(MemoryCacheManager), Priority = 2)]
-        public virtual Product Update(Product product)
+        [CacheRemoveAspect("IProductService.Get")]
+        public IResult Update(Product product)
         {
-            //ValidatorTool.FluentValidate(new ProductValidator(), product);
-            return _productDal.Update(product);
+            _productDal.Update(product);
+            return new SuccessResult(Messages.ProductUpdated);
         }
 
-        [CacheRemoveAspect(typeof(MemoryCacheManager), Priority = 2)]
-        public virtual void Delete(Product product)
+        public IResult Delete(Product product)
         {
             _productDal.Delete(product);
+            return new SuccessResult(Messages.ProductDeleted);
+        }
+
+        public IDataResult<Product> GetById(int productId)
+        {
+            return new SuccessDataResult<Product>(_productDal.Get(p => p.ProductId == productId));
+        }
+
+        //[PerformanceAspect(5)]
+        [LogAspect(typeof(FileLogger))]
+        [LogAspect(typeof(DatabaseLogger))]
+        public IDataResult<List<Product>> GetList()
+        {
+            Thread.Sleep(5000);
+            return new SuccessDataResult<List<Product>>(_productDal.GetAll().ToList());
+        }
+
+        [LogAspect(typeof(FileLogger))]
+        [CacheAspect(duration: 10)]
+        public IDataResult<List<Product>> GetListByCategory(int categoryId)
+        {
+            return new SuccessDataResult<List<Product>>(_productDal.GetAll(p => p.CategoryId == categoryId).ToList());
         }
 
         [TransactionScopeAspect]
-        public virtual void TransactionalOperation(Product product1, Product product2)
+        public IResult TransactionalOperation(Product product)
         {
-            Add(product1);
-            Update(product2);
+            _productDal.Update(product);
+            _productDal.Add(product);
+            return new SuccessResult(Messages.ProductUpdated);
         }
+
+
+        #region Private Local Methods
+        private IResult CheckIfProductNameExists(string productName)
+        {
+
+            var result = _productDal.GetAll(p => p.ProductName == productName).Any();
+            if (result)
+            {
+                return new ErrorResult(Messages.ProductNameAlreadyExists);
+            }
+
+            return new SuccessResult();
+        }
+
+        private IResult CheckIfCategoryIsEnabled()
+        {
+            var result = _categoryService.GetList();
+            if (result.Data.Count < 10)
+            {
+                return new ErrorResult(Messages.ProductNameAlreadyExists);
+            }
+
+            return new SuccessResult();
+        }
+
+        #endregion
+
     }
 }

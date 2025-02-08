@@ -1,6 +1,7 @@
 ﻿using Castle.DynamicProxy;
 using Core.Aspects.CastleDynamicProxy.Interceptors;
 using Core.CrossCuttingConcerns.Validation.FluentValidation;
+using Core.Utilities.Messages;
 using FluentValidation;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,11 @@ namespace Core.Aspects.CastleDynamicProxy.ValidationAspects
         private readonly Type _validatorType;
         public FluentValidationAspect(Type validatorType)
         {
+            if (!typeof(IValidator).IsAssignableFrom(validatorType))
+            {
+                throw new Exception(AspectMessages.WrongValidationType);
+            }
+
             _validatorType = validatorType;
         }
 
@@ -25,7 +31,7 @@ namespace Core.Aspects.CastleDynamicProxy.ValidationAspects
             var validator = (IValidator)Activator.CreateInstance(_validatorType);  // ProductValidator'ı new'leyerek instance'ını oluşturuyoruz.
             var entityType = _validatorType.BaseType.GetGenericArguments()[0];   // ProductValidator olarak oluşturduğumuz validator'ın implemente ettiği AbstractValidator'ın generic argümanını alıyoruz.
 
-            var entities = invocation.Arguments.Where(arg => entityType.IsAssignableFrom(arg.GetType()));  // Methodun argümanlarını dönüyoruz ve entityType'a eşit olanları alıyoruz.
+            var entities = invocation.Arguments.Where(t => t.GetType() == entityType);  // Methodun argümanlarını dönüyoruz ve entityType'a eşit olanları alıyoruz.
 
             foreach (var entity in entities)
             {
