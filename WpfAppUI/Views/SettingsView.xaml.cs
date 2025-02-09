@@ -1,5 +1,8 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -9,19 +12,19 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using WpfAppUI.Models;
 using WpfAppUI.ViewModels;
-using WpfAppUI.Views;
 
-namespace WpfAppUI
+namespace WpfAppUI.Views
 {
-    public partial class MainWindow : Window
+    /// <summary>
+    /// Interaction logic for SettingsView.xaml
+    /// </summary>
+    public partial class SettingsView : UserControl
     {
-        public MainWindow()
+        public SettingsView()
         {
             InitializeComponent();
-            DataContext = new MainViewModel();
+            DataContext = new SettingsViewModel();
         }
-
     }
 }

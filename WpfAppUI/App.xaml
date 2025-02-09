@@ -3,20 +3,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:viewmodels="clr-namespace:WpfAppUI.ViewModels"
              xmlns:views="clr-namespace:WpfAppUI.Views"
-             xmlns:local="clr-namespace:WpfAppUI">
+             xmlns:local="clr-namespace:WpfAppUI"
+             xmlns:utilities="clr-namespace:WpfAppUI.Utilities"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Styles/Common.xaml"/>
+                <materialDesign:BundledTheme BaseTheme="Dark" PrimaryColor="Red" SecondaryColor="LightGreen" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign3.Defaults.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <DataTemplate DataType="{x:Type viewmodels:HomeViewModel}">
-                <views:HomeView/>
-            </DataTemplate>
-
-            <DataTemplate DataType="{x:Type viewmodels:ProductsViewModel}">
-                <views:ProductView/>
-            </DataTemplate>
+            <utilities:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
         </ResourceDictionary>
 
     </Application.Resources>

@@ -12,18 +12,19 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfAppUI.ViewModels;
 
-namespace WpfAppUI.Controls
+namespace WpfAppUI.UserControls
 {
     /// <summary>
-    /// Interaction logic for NavigationBar.xaml
+    /// Interaction logic for LoginResultDialog.xaml
     /// </summary>
-    public partial class NavigationBar : UserControl
+    public partial class LoginResultDialog : UserControl
     {
-        public NavigationBar()
+        public LoginResultDialog()
         {
             InitializeComponent();
+            DataContext = new LoginResultDialogViewModel();
         }
-      
     }
 }

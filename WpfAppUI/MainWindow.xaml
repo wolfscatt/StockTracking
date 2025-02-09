@@ -4,15 +4,32 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfAppUI"
-        xmlns:controls="clr-namespace:WpfAppUI.Controls"
+        xmlns:navrail="clr-namespace:WpfAppUI.UserControls.Navigation"
         mc:Ignorable="d"
-        Title="Stok Takip" Height="450" Width="800" WindowStartupLocation="CenterScreen">
+        Title="Stok Takip" Height="450" Width="800" WindowStartupLocation="CenterScreen"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Style="{StaticResource MaterialDesignWindow}"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}">
+
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <controls:NavigationBar Grid.Row="0" DataContext="{Binding Navigator}"/>
-        <ContentControl Grid.Row="1" Content="{Binding Navigator.CurrentViewModel}"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
+        <navrail:NavigationRail DataContext="{Binding}" Grid.Column="0"/>
+
+        <ContentControl 
+            Content="{Binding CurrentView}" 
+            Grid.Column="1" 
+            HorizontalAlignment="Stretch" 
+            VerticalAlignment="Stretch"/>
     </Grid>
+    
 </Window>

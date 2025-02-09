@@ -12,8 +12,9 @@ using System.Threading.Tasks;
 
 namespace WpfAppUI.ViewModels
 {
-    public class ProductsViewModel :BaseViewModel, INotifyPropertyChanged
+    public class ProductsViewModel :BaseViewModel
     {
+        /*
         public event PropertyChangedEventHandler? PropertyChanged;
 
         IProductService productService = App.Container.Resolve<IProductService>();
@@ -55,5 +56,6 @@ namespace WpfAppUI.ViewModels
             productService.Delete(SelectedProduct);
             Products.Remove(SelectedProduct);
         }
+        */
     }
 }
