@@ -29,6 +29,7 @@ namespace DataAccess.Concrete.EntityFramework.Mappings
             builder.Property(p => p.UpdatedDate).HasColumnName("UpdatedDate");
             builder.Property(p => p.PurchaseDate).HasColumnName("PurchaseDate");
 
+
             // Relationships
             builder.HasOne(p => p.Category).WithMany(c => c.Products).HasForeignKey(p => p.CategoryId);
 

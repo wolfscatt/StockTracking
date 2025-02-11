@@ -37,12 +37,6 @@ namespace Business.Concrete.Managers
         [CacheRemoveAspect("IProductService.Get")]
         public IResult Add(Product product)
         {
-            IResult result = BusinessRules.Run(CheckIfProductNameExists(product.ProductName), CheckIfCategoryIsEnabled());
-
-            if (result != null)
-            {
-                return result;
-            }
             _productDal.Add(product);
             return new SuccessResult(Messages.ProductAdded);
         }

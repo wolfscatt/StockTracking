@@ -17,7 +17,7 @@ namespace Entities.Concrete
         public short UnitsInStock { get; set; }
         public string Description { get; set; }
         public DateTime PurchaseDate { get; set; }
-        public DateTime UpdatedDate { get; set; }
+        public DateTime UpdatedDate { get; set; } = DateTime.Now;
 
         public Product()
         {
