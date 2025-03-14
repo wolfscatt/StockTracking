@@ -1,8 +1,8 @@
 ﻿using Castle.DynamicProxy;
-using Core.Aspects.CastleDynamicProxy.Interceptors;
 using Core.CrossCuttingConcerns.Caching;
 using Core.Utilities.IoC;
 using Microsoft.Extensions.DependencyInjection;
+using Core.Utilities.Interceptors;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,8 +18,8 @@ namespace Core.Aspects.CastleDynamicProxy.CacheAspects
 
         public CacheAspect(int duration = 60)
         {
-            _cacheService = ServiceTool.ServiceProvider.GetService<ICacheService>();
             _duration = duration;
+            _cacheService = ServiceTool.ServiceProvider.GetService<ICacheService>();
         }
 
         public override void OnBefore(IInvocation invocation)

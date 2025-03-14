@@ -21,12 +21,37 @@ namespace WebAPI.Controllers
         public IActionResult GetProducts()
         {
             var result = _productService.GetList();
-            if(result.Success)
+            if (result.Success)
             {
                 return Ok(result);
             }
             return BadRequest(result);
         }
+
+        [HttpGet("getlistbycategory")]
+        public IActionResult GetListByCategory(int categoryId)
+        {
+            var result = _productService.GetListByCategory(categoryId);
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+
+            return BadRequest(result.Message);
+        }
+
+        [HttpGet("getbyid")]
+        public IActionResult GetById(int productId)
+        {
+            var result = _productService.GetById(productId);
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+
+            return BadRequest(result.Message);
+        }
+
         [HttpPost("add")]
         public IActionResult AddProduct(ProductDto productDto)
         {
@@ -45,15 +70,41 @@ namespace WebAPI.Controllers
             }
             return BadRequest(result);
         }
-        [HttpPut("{id}")]
-        public IActionResult UpdateProduct(int id)
+
+        [HttpPost("update")]
+        public IActionResult Update(int productId, ProductDto productDto)
         {
-            return Ok($"UpdateProduct {id}");
+            var getProduct = _productService.GetById(productId).Data;
+            if (productId == getProduct.ProductId)
+            {
+                getProduct.ProductName = productDto.ProductName;
+                getProduct.CategoryId = productDto.CategoryId;
+                getProduct.UnitPrice = productDto.UnitPrice;
+                getProduct.UnitsInStock = productDto.UnitsInStock;
+                getProduct.Description = productDto.Description;
+            }
+
+            var result = _productService.Update(getProduct);
+            if (result.Success)
+            {
+                return Ok(result.Message);
+            }
+
+            return BadRequest(result.Message);
         }
-        [HttpDelete("{id}")]
-        public IActionResult DeleteProduct(int id)
+
+        [HttpPost("delete")]
+        public IActionResult Delete(int productId)
         {
-            return Ok($"DeleteProduct {id}");
+            var getProduct = _productService.GetById(productId).Data;
+
+            var result = _productService.Delete(getProduct);
+            if (result.Success)
+            {
+                return Ok(result.Message);
+            }
+
+            return BadRequest(result.Message);
         }
     }
 }

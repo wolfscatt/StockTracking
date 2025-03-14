@@ -25,23 +25,22 @@ namespace Business.Concrete.Managers
     public class ProductManager : IProductService
     {
         private IProductDal _productDal;
-        private ICategoryService _categoryService;
+        //private ICategoryService _categoryService;
 
-        public ProductManager(IProductDal productDal, ICategoryService categoryService)
+        public ProductManager(IProductDal productDal)
         {
             _productDal = productDal;
-            _categoryService = categoryService;
         }
 
         [FluentValidationAspect(typeof(ProductValidator), Priority = 1)]
-        [CacheRemoveAspect("IProductService.Get")]
+        //[CacheRemoveAspect("IProductService.Get")]
         public IResult Add(Product product)
         {
             _productDal.Add(product);
             return new SuccessResult(Messages.ProductAdded);
         }
         [FluentValidationAspect(typeof(ProductValidator), Priority = 1)]
-        [CacheRemoveAspect("IProductService.Get")]
+        //[CacheRemoveAspect("IProductService.Get")]
         public IResult Update(Product product)
         {
             _productDal.Update(product);
@@ -69,7 +68,7 @@ namespace Business.Concrete.Managers
         }
 
         [LogAspect(typeof(FileLogger))]
-        [CacheAspect(duration: 10)]
+        //[CacheAspect(duration: 240)]
         public IDataResult<List<Product>> GetListByCategory(int categoryId)
         {
             return new SuccessDataResult<List<Product>>(_productDal.GetAll(p => p.CategoryId == categoryId).ToList());
@@ -97,16 +96,16 @@ namespace Business.Concrete.Managers
             return new SuccessResult();
         }
 
-        private IResult CheckIfCategoryIsEnabled()
-        {
-            var result = _categoryService.GetList();
-            if (result.Data.Count < 10)
-            {
-                return new ErrorResult(Messages.ProductNameAlreadyExists);
-            }
+        //private IResult CheckIfCategoryIsEnabled()
+        //{
+        //    var result = _categoryService.GetList();
+        //    if (result.Data.Count < 10)
+        //    {
+        //        return new ErrorResult(Messages.ProductNameAlreadyExists);
+        //    }
 
-            return new SuccessResult();
-        }
+        //    return new SuccessResult();
+        //}
 
         #endregion
 

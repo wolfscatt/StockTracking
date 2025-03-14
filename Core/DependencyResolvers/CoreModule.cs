@@ -1,12 +1,11 @@
-﻿using Autofac.Core;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Text;
 using Core.CrossCuttingConcerns.Caching;
 using Core.CrossCuttingConcerns.Caching.Microsoft;
 using Core.Utilities.IoC;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 
 namespace Core.DependencyResolvers
 {
@@ -16,6 +15,7 @@ namespace Core.DependencyResolvers
         {
 
             // Burada başka Servisler için IoC Container'a eklemeler yapabiliriz.
+            services.AddMemoryCache();
             services.AddSingleton<ICacheService, MemoryCacheManager>();
             services.AddSingleton<Stopwatch>();
         }

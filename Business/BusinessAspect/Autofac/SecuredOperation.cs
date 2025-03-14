@@ -1,5 +1,5 @@
 ﻿using Castle.DynamicProxy;
-using Core.Aspects.CastleDynamicProxy.Interceptors;
+using Core.Utilities.Interceptors;
 using Core.Utilities.IoC;
 using System;
 using System.Collections.Generic;

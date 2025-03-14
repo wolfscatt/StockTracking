@@ -39,7 +39,6 @@ Product product = new Product()
 var addedProduct = productManager.Add(product);
 Console.WriteLine(addedProduct);
 */
-ProductTest();
 
 static void CategoryTest()
 {
@@ -50,27 +49,5 @@ static void CategoryTest()
     }
 }
 
-static void ProductTest()
-{
-    ProductManager productManager = new ProductManager(new EfProductDal()
-        , new CategoryManager(new EfCategoryDal()));
-
-    var result = productManager.GetList();
-
-    if (result.Success == true)
-    {
-        foreach (var product in result.Data)
-        {
-            Console.WriteLine(product);
-            Console.WriteLine("--------------------------");
-        }
-    }
-    else
-    {
-        Console.WriteLine(result.Message);
-    }
-
-
-}
 
 Console.ReadKey();

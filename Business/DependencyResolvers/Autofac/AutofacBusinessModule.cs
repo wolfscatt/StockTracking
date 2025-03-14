@@ -2,7 +2,6 @@
 using Business.Abstract;
 using Business.Concrete.Managers;
 using Castle.DynamicProxy;
-using Core.Aspects.CastleDynamicProxy.Interceptors;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
 using System;
@@ -10,6 +9,10 @@ using System.Collections.Generic;
 using System.Text;
 using Autofac.Extras.DynamicProxy;
 using Business.Concrete;
+using Core.CrossCuttingConcerns.Caching.Microsoft;
+using Core.CrossCuttingConcerns.Caching;
+using Microsoft.Extensions.Caching.Memory;
+using Core.Utilities.Interceptors;
 
 namespace Business.DependencyResolvers.Autofac
 {

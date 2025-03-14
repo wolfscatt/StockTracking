@@ -1,10 +1,16 @@
-﻿using Castle.DynamicProxy;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using Castle.DynamicProxy;
+using Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;
 
-namespace Core.Aspects.CastleDynamicProxy.Interceptors
+namespace Core.Utilities.Interceptors
 {
     public class AspectInterceptorSelector : IInterceptorSelector
     {
-        public IInterceptor[] SelectInterceptors(Type type, System.Reflection.MethodInfo method, IInterceptor[] interceptors)
+        public IInterceptor[] SelectInterceptors(Type type, MethodInfo method, IInterceptor[] interceptors)
         {
             var classAttributes = type.GetCustomAttributes(typeof(MethodInterceptionBaseAttribute), true)
                 .Cast<MethodInterceptionBaseAttribute>()
