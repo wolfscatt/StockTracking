@@ -13,9 +13,11 @@ namespace Core.CrossCuttingConcerns.Caching.Microsoft
     public class MemoryCacheManager : ICacheService
     {
         private IMemoryCache _cache;
+        private readonly HashSet<string> _keys; // Key'leri tutan liste
         public MemoryCacheManager()
         {
             _cache = ServiceTool.ServiceProvider.GetService<IMemoryCache>();
+            _keys = new HashSet<string>();
         }
         public T Get<T>(string key)
         {
@@ -29,6 +31,7 @@ namespace Core.CrossCuttingConcerns.Caching.Microsoft
             }
 
             _cache.Set(key, data, TimeSpan.FromMinutes(duration));
+            _keys.Add(key);
         }
         public bool IsAdd(string key)
         {
@@ -38,11 +41,18 @@ namespace Core.CrossCuttingConcerns.Caching.Microsoft
         public void Remove(string key)
         {
             _cache.Remove(key);
+            _keys.Remove(key);
         }
 
         public void RemoveByPattern(string pattern)
         {
+            // Burası çalışmayan kod. Eski .NET sürümlerinde çalışıyordu. EntriesCollection Prop artık kullanılmıyormuş.
+            /* 
             var cacheEntriesCollectionDefinition = typeof(MemoryCache).GetProperty("EntriesCollection", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            if (cacheEntriesCollectionDefinition == null)
+            {
+                throw new Exception("EntriesCollection property not found. The implementation might have changed in this .NET version.");
+            }
             var cacheEntriesCollection = cacheEntriesCollectionDefinition.GetValue(_cache) as dynamic;
             List<ICacheEntry> cacheCollectionValues = new List<ICacheEntry>();
 
@@ -58,6 +68,17 @@ namespace Core.CrossCuttingConcerns.Caching.Microsoft
             foreach (var key in keysToRemove)
             {
                 _cache.Remove(key);
+            }
+            */
+
+            // Yeni kod _key hashset'ini kullanarak çalışıyor.
+            var regex = new Regex(pattern, RegexOptions.Singleline | RegexOptions.Compiled | RegexOptions.IgnoreCase);
+            var keysToRemove = _keys.Where(k => regex.IsMatch(k)).ToList();
+
+            foreach (var key in keysToRemove)
+            {
+                _cache.Remove(key);
+                _keys.Remove(key);
             }
         }
 

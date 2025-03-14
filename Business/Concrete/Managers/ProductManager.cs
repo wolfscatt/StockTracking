@@ -33,14 +33,14 @@ namespace Business.Concrete.Managers
         }
 
         [FluentValidationAspect(typeof(ProductValidator), Priority = 1)]
-        //[CacheRemoveAspect("IProductService.Get")]
+        [CacheRemoveAspect("IProductService.Get")]
         public IResult Add(Product product)
         {
             _productDal.Add(product);
             return new SuccessResult(Messages.ProductAdded);
         }
         [FluentValidationAspect(typeof(ProductValidator), Priority = 1)]
-        //[CacheRemoveAspect("IProductService.Get")]
+        [CacheRemoveAspect("IProductService.Get")]
         public IResult Update(Product product)
         {
             _productDal.Update(product);
@@ -53,6 +53,7 @@ namespace Business.Concrete.Managers
             return new SuccessResult(Messages.ProductDeleted);
         }
 
+        [CacheAspect()]
         public IDataResult<Product> GetById(int productId)
         {
             return new SuccessDataResult<Product>(_productDal.Get(p => p.ProductId == productId));
@@ -61,6 +62,7 @@ namespace Business.Concrete.Managers
         //[PerformanceAspect(5)]
         [LogAspect(typeof(FileLogger))]
         [LogAspect(typeof(DatabaseLogger))]
+        [CacheAspect()]
         public IDataResult<List<Product>> GetList()
         {
             Thread.Sleep(5000);
@@ -68,7 +70,7 @@ namespace Business.Concrete.Managers
         }
 
         [LogAspect(typeof(FileLogger))]
-        //[CacheAspect(duration: 240)]
+        [CacheAspect()]
         public IDataResult<List<Product>> GetListByCategory(int categoryId)
         {
             return new SuccessDataResult<List<Product>>(_productDal.GetAll(p => p.CategoryId == categoryId).ToList());

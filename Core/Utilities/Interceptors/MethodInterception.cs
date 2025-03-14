@@ -28,11 +28,6 @@ namespace Core.Utilities.Interceptors
             OnAfter(invocation);
         }
 
-        public virtual void RuntimeInitialize()
-        {
-            Console.WriteLine("Runtime Initialize Method is Running...");
-        }
-
         public virtual void OnBefore(IInvocation invocation)
         {
             Console.WriteLine("MethodInterception is executing before...");

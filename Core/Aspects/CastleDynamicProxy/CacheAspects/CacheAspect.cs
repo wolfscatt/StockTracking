@@ -22,7 +22,7 @@ namespace Core.Aspects.CastleDynamicProxy.CacheAspects
             _cacheService = ServiceTool.ServiceProvider.GetService<ICacheService>();
         }
 
-        public override void OnBefore(IInvocation invocation)
+        public override void Intercept(IInvocation invocation)
         {
             var methodName = string.Format($"{invocation.Method.ReflectedType.FullName}.{invocation.Method.Name}");
             var arguments = invocation.Arguments.ToList();
@@ -33,6 +33,7 @@ namespace Core.Aspects.CastleDynamicProxy.CacheAspects
                 invocation.ReturnValue = data;
                 return;
             }
+            invocation.Proceed();
             _cacheService.Add(key, invocation.ReturnValue, _duration);
         }
     }
