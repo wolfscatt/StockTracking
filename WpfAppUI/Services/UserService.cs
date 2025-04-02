@@ -1,30 +1,52 @@
-﻿using System;
+﻿using Autofac;
+using Business.Abstract;
+using Entities.Concrete;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
+using WpfAppUI.DependencyResolvers;
 using WpfAppUI.Models;
+using WpfAppUI.Services.Interfaces;
 
 namespace WpfAppUI.Services
 {
-    public class UserService
+    public class UserService : IUserServiceFrontEnd
     {
-        private List<User> _users = new List<User>
+        private readonly IUserService _userService;
+        private User _currentUser;
+
+        public UserService()
         {
-            new User { Username = "admin", Password = "admin", FullName = "Admin User", Email = "admin@example.com" },
-            new User { Username = "user1", Password = "1234", FullName = "User One", Email = "user1@example.com" }
-        };
+            _userService = IocContainer.Container.Resolve<IUserService>();
+        }
+       
+        public bool IsLoggedIn => _currentUser != null;
+        public User CurrentUser => _currentUser;
 
         public User Authenticate(string username, string password)
         {
-            return _users.FirstOrDefault(u => u.Username == username && u.Password == password);
+            List<User> users = _userService.GetAllUser().Data ?? new List<User>();
+            return users.FirstOrDefault(u =>
+                u.Username.Equals(username, StringComparison.OrdinalIgnoreCase) &&
+                u.Password == password
+            ) ;
         }
 
-        public void UpdateUser(User updatedUser)
+        public void Login(User user)
         {
-            // Burada veritabanına kaydedebilirsiniz.
-            // Bu örnekte UserSession güncelleniyor.
-            UserSession.Instance.CurrentUser = updatedUser;
+            _currentUser = user;
+            UserSession.Instance.SetUser(user);
+        }
+
+        public void Logout()
+        {
+            _currentUser = null;
+            UserSession.Instance.Clear();
         }
     }
+
 }

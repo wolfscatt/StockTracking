@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="WpfAppUI.UserControls.Dialogs.ConfirmDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WpfAppUI.UserControls.Dialogs"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             x:Name="Root">
+    <StackPanel Margin="16">
+        <TextBlock Text="{Binding Message, RelativeSource={RelativeSource AncestorType=UserControl}}"
+           FontSize="16" TextWrapping="Wrap" Margin="0,0,0,20"/>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Hayır" Margin="0,0,10,0"
+                    Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" 
+                    CommandParameter="False"/>
+            <Button Content="Evet" 
+                    Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" 
+                    CommandParameter="True"/>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

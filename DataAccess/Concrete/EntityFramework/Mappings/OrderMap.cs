@@ -22,6 +22,13 @@ namespace DataAccess.Concrete.EntityFramework.Mappings
 
             // Relationships
             builder.HasOne(o => o.Customer).WithMany(c => c.Orders).HasForeignKey(o => o.CustomerId);
+
+            // Example Data
+            builder.HasData(
+                new Order { OrderId = 1, CustomerId = 1, OrderDate = new System.DateTime(2025, 1, 1), TotalAmount = 100 },
+                new Order { OrderId = 2, CustomerId = 2, OrderDate = new System.DateTime(2025, 1, 2), TotalAmount = 200 },
+                new Order { OrderId = 3, CustomerId = 3, OrderDate = new System.DateTime(2025, 1, 3), TotalAmount = 300 }
+            );
         }
     }
 }

@@ -10,7 +10,7 @@ namespace WpfAppUI.State.Navigators
 {
     public interface INavigator
     {
-        BaseViewModel CurrentViewModel { get; set; }
+        ViewModelBase CurrentViewModel { get; set; }
         ICommand UpdateCurrentViewModelCommand { get; }
     }
 }

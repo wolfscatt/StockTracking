@@ -1,22 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows;
-using WpfAppUI.Commands;
+using WpfAppUI.Models;
 using WpfAppUI.Services;
-using MaterialDesignThemes.Wpf;
-using System.Windows.Controls;
-using WpfAppUI.UserControls;
-using WpfAppUI.Views;
+using WpfAppUI.Services.Interfaces;
+using WpfAppUI.Commands;
 
 namespace WpfAppUI.ViewModels
 {
-    public class LoginViewModel : BaseViewModel
+    public class LoginViewModel : ViewModelBase
     {
-        public Action<string,Action> PopupRequest { get; set; }
+        public Action<string, Action> PopupRequest { get; set; }
 
         private readonly UserService _userService;
         private string _username;
@@ -70,11 +65,9 @@ namespace WpfAppUI.ViewModels
         private void Login(object parameter)
         {
             var user = _userService.Authenticate(Username, Password);
-            // Simulate login logic; replace this with actual service call
             if (user != null)
             {
-                // Kullanıcı bilgilerini UserSession'a kaydet
-                UserSession.Instance.CurrentUser = user;
+                _userService.Login(user);
 
                 PopupRequest?.Invoke($"Hoşgeldin, {user.FullName}!", () =>
                 {

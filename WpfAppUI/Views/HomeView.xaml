@@ -5,50 +5,51 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WpfAppUI.Views"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800">
 
-    <Grid Margin="20">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="20" Orientation="Vertical" >
 
-        <!-- Title -->
-        <TextBlock Text="Stok Takip Dashboard" FontSize="24" FontWeight="Bold" Margin="0,0,0,20"/>
+            <!-- Başlık -->
+            <TextBlock Text="Stok Takip Dashboard"
+                       FontSize="24"
+                       FontWeight="Bold"
+                       Margin="0,0,0,20"/>
 
-        <!-- Summary Cards -->
-        <UniformGrid Grid.Row="0" Rows="1" Columns="3" HorizontalAlignment="Stretch" Margin="0,20,0,20">
-            <!-- Total Products Card -->
-            <materialDesign:Card Padding="16" Margin="10" materialDesign:ElevationAssist.Elevation="Dp24">
-                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <TextBlock Text="Toplam Ürün" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center"/>
-                    <TextBlock Text="1,250" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center"/>
+            <!-- Özet Kartlar -->
+            <WrapPanel HorizontalAlignment="Stretch" ItemWidth="250" ItemHeight="120" Margin="0,0,0,20">
+                <materialDesign:Card Padding="16" Margin="8" materialDesign:ElevationAssist.Elevation="Dp4">
+                    <StackPanel>
+                        <TextBlock Text="Toplam Ürün" FontWeight="SemiBold" FontSize="16"/>
+                        <TextBlock Text="{Binding TotalProductCount}" FontSize="28" FontWeight="Bold" Foreground="SteelBlue"/>
+                    </StackPanel>
+                </materialDesign:Card>
+
+                <materialDesign:Card Padding="16" Margin="8" materialDesign:ElevationAssist.Elevation="Dp4">
+                    <StackPanel>
+                        <TextBlock Text="Kritik Stok ( &lt; 5 )" FontWeight="SemiBold" FontSize="16"/>
+                        <TextBlock Text="{Binding CriticalStockCount}" FontSize="28" FontWeight="Bold" Foreground="Tomato"/>
+                    </StackPanel>
+                </materialDesign:Card>
+
+                <materialDesign:Card Padding="16" Margin="8" materialDesign:ElevationAssist.Elevation="Dp4">
+                    <StackPanel>
+                        <TextBlock Text="Toplam Stok Adedi" FontWeight="SemiBold" FontSize="16"/>
+                        <TextBlock Text="{Binding TotalUnitsInStock}" FontSize="28" FontWeight="Bold" Foreground="MediumSeaGreen"/>
+                    </StackPanel>
+                </materialDesign:Card>
+            </WrapPanel>
+
+            <!-- Grafik Kartı -->
+            <materialDesign:Card Padding="16" Margin="8" materialDesign:ElevationAssist.Elevation="Dp4">
+                <StackPanel>
+                    <TextBlock Text="Kategorilere Göre Stok Dağılımı" FontSize="18" FontWeight="Bold" Margin="0,0,0,16"/>
+                    <lvc:PieChart Series="{Binding PieSeries}" LegendLocation="Right" Height="300"/>
                 </StackPanel>
             </materialDesign:Card>
 
-            <!-- Critical Stock Card -->
-            <materialDesign:Card Padding="16" Margin="10" Background="LightCoral" materialDesign:ElevationAssist.Elevation="Dp24">
-                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <TextBlock Text="Kritik Stok" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center"/>
-                    <TextBlock Text="12 Ürün" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center"/>
-                </StackPanel>
-            </materialDesign:Card>
-
-            <!-- Sold Products Card -->
-            <materialDesign:Card Padding="16" Margin="10" Background="LightGreen" materialDesign:ElevationAssist.Elevation="Dp24">
-                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <TextBlock Text="Satılan Ürün" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center"/>
-                    <TextBlock Text="342" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center"/>
-                </StackPanel>
-            </materialDesign:Card>
-        </UniformGrid>
-
-        <!-- Quick Actions (Bottom Right) -->
-        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,20,0,0">
-            <Button Content="Yeni Ürün Ekle" Width="150" Height="40" Margin="10" Style="{StaticResource MaterialDesignRaisedDarkButton}" />
-            <Button Content="Stok Güncelle" Width="150" Height="40" Margin="10" Style="{StaticResource MaterialDesignRaisedDarkButton}" />
-            <Button Content="Raporları Görüntüle" Width="150" Height="40" Margin="10" Style="{StaticResource MaterialDesignRaisedDarkButton}" />
         </StackPanel>
-    </Grid>
+    </ScrollViewer>
 </UserControl>

@@ -1,0 +1,155 @@
+<UserControl x:Class="WpfAppUI.Views.ProductsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d"
+             >
+
+    <materialDesign:DialogHost Identifier="RootDialog">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Başlık -->
+        <TextBlock Text="Ürün Listesi" FontSize="22" FontWeight="Bold" Margin="0,0,0,16"/>
+
+        <!-- Arama ve Yeni Ürün Ekleme -->
+        <Grid Grid.Row="0" Margin="0,0,0,16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBox
+                Grid.Column="0"
+             Margin="0,30,16,0"
+             materialDesign:HintAssist.Hint="Ürün Ara"
+             Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+             Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+
+                <Button Grid.Column="1" Command="{Binding AddNewCommand}" Margin="8,0,0,0"
+                    CommandParameter="{Binding}"
+                    Style="{StaticResource MaterialDesignFlatButton}">
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="Plus" Margin="0,0,8,0"/>
+                    <TextBlock Text="Yeni Ürün"/>
+                </StackPanel>
+            </Button>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Ürün Tablosu -->
+            <DataGrid Grid.Column="0"
+                  ItemsSource="{Binding Products}"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True"
+                  Margin="0"
+                  Style="{StaticResource MaterialDesignDataGrid}"
+                  materialDesign:DataGridAssist.CellPadding="8"
+                  materialDesign:DataGridAssist.ColumnHeaderPadding="12"
+                  RowHeaderWidth="0"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  CanUserReorderColumns="False"
+                  CanUserResizeRows="False"
+                  CanUserSortColumns="True">
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="ID" Binding="{Binding ProductId}" Width="Auto"/>
+                    <DataGridTextColumn Header="Ürün Adı" Binding="{Binding ProductName}" Width="*"/>
+                    <DataGridTextColumn Header="Kategori" Binding="{Binding Category.CategoryName}" Width="*"/>
+                    <DataGridTextColumn Header="Fiyat" Binding="{Binding UnitPrice, StringFormat=C2}" Width="Auto"/>
+                    <DataGridTextColumn Header="Stok" Binding="{Binding UnitsInStock}" Width="Auto"/>
+                    <DataGridTextColumn Header="Açıklama" Binding="{Binding Description}" Width="2*"/>
+                    <DataGridTemplateColumn Header="İşlemler">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Command="{Binding DataContext.EditCommand,
+                                        RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                            CommandParameter="{Binding}"
+                                        Style="{StaticResource MaterialDesignIconButton}"
+                                        ToolTip="Düzenle">
+                                        <materialDesign:PackIcon Kind="Pencil"/>
+                                    </Button>
+                                    <Button Command="{Binding DataContext.DeleteCommand,
+                                        RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                            CommandParameter="{Binding}"
+                                        Style="{StaticResource MaterialDesignIconButton}"
+                                        ToolTip="Sil">
+                                        <materialDesign:PackIcon Kind="Delete"/>
+                                    </Button>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <!-- Düzenleme Paneli -->
+            <materialDesign:Card Grid.Column="1"
+                            Margin="16,0,0,0"
+                            Width="300"
+                            Visibility="{Binding IsEditMode, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <StackPanel Margin="16">
+                    <TextBlock Text="Ürün Detayları"
+                         Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                         Margin="0,0,0,16"/>
+
+                    <TextBox Text="{Binding SelectedProduct.ProductName, UpdateSourceTrigger=PropertyChanged}"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         materialDesign:HintAssist.Hint="Ürün Adı"
+                         Margin="0,8"/>
+
+                    <ComboBox ItemsSource="{Binding Categories}"
+                          SelectedValue="{Binding SelectedProduct.CategoryId}"
+                          DisplayMemberPath="CategoryName"
+                          SelectedValuePath="CategoryId"
+                          Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                          materialDesign:HintAssist.Hint="Kategori"
+                          Margin="0,8"/>
+
+                    <TextBox Text="{Binding SelectedProduct.UnitPrice, UpdateSourceTrigger=PropertyChanged}"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         materialDesign:HintAssist.Hint="Birim Fiyat"
+                         Margin="0,8"/>
+
+                    <TextBox Text="{Binding SelectedProduct.UnitsInStock, UpdateSourceTrigger=PropertyChanged}"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         materialDesign:HintAssist.Hint="Stok Miktarı"
+                         Margin="0,8"/>
+
+                    <TextBox Text="{Binding SelectedProduct.Description, UpdateSourceTrigger=PropertyChanged}"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         materialDesign:HintAssist.Hint="Açıklama"
+                         TextWrapping="Wrap"
+                         Height="100"
+                         AcceptsReturn="True"
+                         VerticalScrollBarVisibility="Auto"
+                         Margin="0,8"/>
+
+                    <StackPanel Orientation="Horizontal"
+                          HorizontalAlignment="Right"
+                          Margin="0,16,0,0">
+                        <Button Command="{Binding CancelCommand}"
+                            Style="{StaticResource MaterialDesignOutlinedButton}"
+                            Content="İptal"
+                            Margin="0,0,8,0"/>
+                        <Button Command="{Binding SaveCommand}"
+                            Style="{StaticResource MaterialDesignFlatButton}"
+                            Content="Kaydet"/>
+                    </StackPanel>
+                </StackPanel>
+            </materialDesign:Card>
+        </Grid>
+    </Grid>
+    </materialDesign:DialogHost>
+</UserControl>

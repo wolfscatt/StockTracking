@@ -58,5 +58,10 @@ namespace DataAccess.Concrete.NHibarnate.Repository
                 session.Delete(entity);
             }
         }
+
+        public List<TEntity> GetAllWithInclude(params Expression<Func<TEntity, object>>[] includes)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

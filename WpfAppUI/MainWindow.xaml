@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WpfAppUI"
         xmlns:navrail="clr-namespace:WpfAppUI.UserControls.Navigation"
         mc:Ignorable="d"
-        Title="Stok Takip" Height="450" Width="800" WindowStartupLocation="CenterScreen"
+        Title="Stok Takip" Height="800" Width="1100" WindowStartupLocation="CenterScreen"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         Style="{StaticResource MaterialDesignWindow}"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -22,7 +22,7 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        
+
         <navrail:NavigationRail DataContext="{Binding}" Grid.Column="0"/>
 
         <ContentControl 
@@ -31,5 +31,5 @@
             HorizontalAlignment="Stretch" 
             VerticalAlignment="Stretch"/>
     </Grid>
-    
+
 </Window>

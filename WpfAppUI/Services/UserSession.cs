@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Entities.Concrete;
 using WpfAppUI.Models;
 
 namespace WpfAppUI.Services
@@ -12,8 +8,14 @@ namespace WpfAppUI.Services
         private static UserSession _instance;
         public static UserSession Instance => _instance ??= new UserSession();
 
-        public User CurrentUser { get; set; }
+        public User CurrentUser { get; private set; }
+        public void SetUser(User user)
+        {
+            CurrentUser = user;
+        }
+        public void Clear() => CurrentUser = null;
 
         private UserSession() { }
     }
+   
 }

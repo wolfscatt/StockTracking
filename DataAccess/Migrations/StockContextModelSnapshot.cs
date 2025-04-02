@@ -85,6 +85,32 @@ namespace DataAccess.Migrations
                     b.HasKey("CustomerId");
 
                     b.ToTable("Customers", "dbo");
+
+                    b.HasData(
+                        new
+                        {
+                            CustomerId = 1,
+                            Address = "İstanbul",
+                            Email = "Test@gmail.com",
+                            FullName = "Ali Veli",
+                            Phone = "1234567890"
+                        },
+                        new
+                        {
+                            CustomerId = 2,
+                            Address = "Samsun",
+                            Email = "Ahmet@gmail.com",
+                            FullName = "Ahmet Mehmet",
+                            Phone = "5215738232"
+                        },
+                        new
+                        {
+                            CustomerId = 3,
+                            Address = "Ankara",
+                            Email = "fatma06@gmail.com",
+                            FullName = "Ayşe Fatma",
+                            Phone = "5168944601"
+                        });
                 });
 
             modelBuilder.Entity("Entities.Concrete.Order", b =>
@@ -113,6 +139,29 @@ namespace DataAccess.Migrations
                     b.HasIndex("CustomerId");
 
                     b.ToTable("Orders", "dbo");
+
+                    b.HasData(
+                        new
+                        {
+                            OrderId = 1,
+                            CustomerId = 1,
+                            OrderDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            TotalAmount = 100m
+                        },
+                        new
+                        {
+                            OrderId = 2,
+                            CustomerId = 2,
+                            OrderDate = new DateTime(2025, 1, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            TotalAmount = 200m
+                        },
+                        new
+                        {
+                            OrderId = 3,
+                            CustomerId = 3,
+                            OrderDate = new DateTime(2025, 1, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            TotalAmount = 300m
+                        });
                 });
 
             modelBuilder.Entity("Entities.Concrete.OrderDetail", b =>
@@ -147,6 +196,32 @@ namespace DataAccess.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("OrderDetails", "dbo");
+
+                    b.HasData(
+                        new
+                        {
+                            OrderDetailId = 1,
+                            OrderId = 1,
+                            ProductId = 1,
+                            Quantity = (short)1,
+                            UnitPrice = 100m
+                        },
+                        new
+                        {
+                            OrderDetailId = 2,
+                            OrderId = 2,
+                            ProductId = 2,
+                            Quantity = (short)2,
+                            UnitPrice = 200m
+                        },
+                        new
+                        {
+                            OrderDetailId = 3,
+                            OrderId = 3,
+                            ProductId = 30,
+                            Quantity = (short)3,
+                            UnitPrice = 300m
+                        });
                 });
 
             modelBuilder.Entity("Entities.Concrete.Product", b =>
@@ -201,10 +276,10 @@ namespace DataAccess.Migrations
                             CategoryId = 1,
                             Description = "Description 1",
                             ProductName = "Product 1",
-                            PurchaseDate = new DateTime(2025, 1, 1, 16, 30, 17, 594, DateTimeKind.Local).AddTicks(1169),
+                            PurchaseDate = new DateTime(2025, 4, 2, 20, 37, 6, 630, DateTimeKind.Local).AddTicks(5608),
                             UnitPrice = 10m,
                             UnitsInStock = (short)100,
-                            UpdatedDate = new DateTime(2025, 1, 1, 16, 30, 17, 594, DateTimeKind.Local).AddTicks(1881)
+                            UpdatedDate = new DateTime(2025, 4, 2, 20, 37, 6, 630, DateTimeKind.Local).AddTicks(5717)
                         },
                         new
                         {
@@ -212,10 +287,10 @@ namespace DataAccess.Migrations
                             CategoryId = 2,
                             Description = "Description 2",
                             ProductName = "Product 2",
-                            PurchaseDate = new DateTime(2025, 1, 1, 16, 30, 17, 594, DateTimeKind.Local).AddTicks(1998),
+                            PurchaseDate = new DateTime(2025, 4, 2, 20, 37, 6, 630, DateTimeKind.Local).AddTicks(5796),
                             UnitPrice = 20m,
                             UnitsInStock = (short)200,
-                            UpdatedDate = new DateTime(2025, 1, 1, 16, 30, 17, 594, DateTimeKind.Local).AddTicks(1999)
+                            UpdatedDate = new DateTime(2025, 4, 2, 20, 37, 6, 630, DateTimeKind.Local).AddTicks(5796)
                         });
                 });
 
@@ -228,9 +303,10 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
 
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("CreatedDate");
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Email");
 
                     b.Property<string>("FullName")
                         .IsRequired()
@@ -255,6 +331,17 @@ namespace DataAccess.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("Users", "dbo");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = 1,
+                            Email = "tufar220@gmail.com",
+                            FullName = "Ömer Faruk",
+                            Password = "admin",
+                            Role = "Admin",
+                            Username = "admin"
+                        });
                 });
 
             modelBuilder.Entity("Entities.Concrete.Order", b =>

@@ -25,6 +25,34 @@ namespace DataAccess.Concrete.EntityFramework.Mappings
             builder.HasMany(c => c.Orders)
                    .WithOne(o => o.Customer)
                    .HasForeignKey(o => o.CustomerId);
+
+            // Example Data
+            builder.HasData(
+                new Customer()
+                {
+                    CustomerId = 1,
+                    FullName = "Ali Veli",
+                    Address = "İstanbul",
+                    Email = "Test@gmail.com",
+                    Phone = "1234567890",
+                },
+                new Customer()
+                {
+                    CustomerId = 2,
+                    FullName = "Ahmet Mehmet",
+                    Address = "Samsun",
+                    Email = "Ahmet@gmail.com",
+                    Phone = "5215738232",
+                },
+                new Customer()
+                {
+                    CustomerId = 3,
+                    FullName = "Ayşe Fatma",
+                    Address = "Ankara",
+                    Email = "fatma06@gmail.com",
+                    Phone = "5168944601",
+                }
+                );
         }
     }
 }

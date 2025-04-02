@@ -1,5 +1,6 @@
 ﻿using DataAccess.Abstract.IRepository;
 using Entities.Abstract;
+using Entities.Concrete;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,24 @@ namespace DataAccess.Concrete.EntityFramework.Repository
                     : context.Set<TEntity>().Where(filter).ToList();
             }
         }
+        public List<TEntity> GetAllWithInclude(params Expression<Func<TEntity, object>>[] includes)
+        {
+            using (var context = new TContext())
+            {
+                var repository = new EfQueryableRepository<TEntity>(context);
+
+                IQueryable<TEntity> query = repository.Table;
+
+                foreach (var include in includes)
+                {
+                    query = query.Include(include);
+                }
+
+                return query.ToList();
+            }
+                
+        }
+
 
         public TEntity Get(Expression<Func<TEntity, bool>> filter)
         {

@@ -1,4 +1,5 @@
-﻿using MaterialDesignThemes.Wpf;
+﻿using Entities.Concrete;
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,36 +13,16 @@ using System.Windows.Input;
 using WpfAppUI.Commands;
 using WpfAppUI.Models;
 using WpfAppUI.Services;
+using WpfAppUI.Views;
 
 namespace WpfAppUI.ViewModels
 {
-    public class SettingsViewModel: BaseViewModel
+    public class SettingsViewModel : ViewModelBase
     {
         private readonly PaletteHelper _paletteHelper = new PaletteHelper();
         private readonly SettingsService _settingsService = new SettingsService();
         private readonly UserService _userService;
         private UserPreferences _preferences;
-        private bool _isModified;
-        private User _currentUser;
-        public User CurrentUser
-        {
-            get => _currentUser;
-            set
-            {
-                IsModified = true;
-                _currentUser = value;
-                OnPropertyChanged(nameof(CurrentUser));
-            }
-        }
-        public bool IsModified
-        {
-            get => _isModified;
-            set
-            {
-                _isModified = value;
-                OnPropertyChanged(nameof(IsModified));
-            }
-        }
 
         public bool IsDarkTheme
         {
@@ -54,24 +35,47 @@ namespace WpfAppUI.ViewModels
                 SavePreferences();
             }
         }
-        public ICommand UpdateCommand { get; }
+        public ICommand LogoutCommand { get; }
 
-        private bool CanUpdate(object parameter) => IsModified;
+        public string FullName => UserSession.Instance.CurrentUser?.FullName;
+        public string Email => UserSession.Instance.CurrentUser?.Email;
+        public string Username => UserSession.Instance.CurrentUser?.Username;
+
 
         public SettingsViewModel()
         {
             _preferences = _settingsService.LoadSettings();
             ApplyTheme(_preferences.IsDarkTheme);
             _userService = new UserService(); // Bu, kullanıcı verisini kaydeden servis
-            CurrentUser = UserSession.Instance.CurrentUser;
-            UpdateCommand = new RelayCommand(UpdateUser, CanUpdate);
+            LogoutCommand = new RelayCommand(ExecuteLogout);
         }
-        private void UpdateUser(object parameter)
+        private async void ExecuteLogout(object parameter)
         {
-            // Güncelleme işlemi (örneğin UserService üzerinden kaydetme)
-            _userService.UpdateUser(CurrentUser);
-            IsModified = false; // Güncelleme sonrası butonu devre dışı bırak
+            bool result = await DialogService.ShowConfirmation("Oturumu kapatmak istediğinizden emin misiniz?", "LogoutDialogHost");
+
+
+            if (result)
+            {
+                // Animasyon gibi biraz gecikme efekti
+                await Task.Delay(300); // küçük bir geçiş efekti
+
+                _userService.Logout();
+
+                var loginWindow = new LoginWindow();
+                Application.Current.MainWindow = loginWindow;
+                loginWindow.Show();
+
+                foreach (Window window in Application.Current.Windows)
+                {
+                    if (window is MainWindow)
+                    {
+                        window.Close();
+                        break;
+                    }
+                }
+            }
         }
+
 
         private void ApplyTheme(bool isDark)
         {
@@ -83,6 +87,5 @@ namespace WpfAppUI.ViewModels
         {
             _settingsService.SaveSettings(_preferences);
         }
-        
     }
 }

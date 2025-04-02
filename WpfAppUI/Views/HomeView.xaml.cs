@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfAppUI.ViewModels;
 
 namespace WpfAppUI.Views
 {
@@ -23,6 +24,7 @@ namespace WpfAppUI.Views
         public HomeView()
         {
             InitializeComponent();
+            DataContext = new HomeViewModel();
         }
     }
 }

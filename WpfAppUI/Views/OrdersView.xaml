@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="WpfAppUI.Views.OrdersView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="900">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Başlık -->
+        <TextBlock Text="Sipariş Listesi" FontSize="22" FontWeight="Bold" Margin="0,0,0,16"/>
+
+        <!-- Sipariş Tablosu -->
+        <DataGrid Grid.Row="1"
+                  ItemsSource="{Binding Orders}"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True"
+                  Style="{StaticResource MaterialDesignDataGrid}"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  Margin="0"
+                  materialDesign:DataGridAssist.CellPadding="8"
+                  materialDesign:DataGridAssist.ColumnHeaderPadding="12">
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Sipariş ID" Binding="{Binding OrderId}" Width="Auto"/>
+                <DataGridTextColumn Header="Müşteri" Binding="{Binding Customer.FullName}" Width="*"/>
+                <DataGridTextColumn Header="Sipariş Tarihi" Binding="{Binding OrderDate, StringFormat=d}" Width="*"/>
+                <DataGridTextColumn Header="Tutar" Binding="{Binding TotalAmount, StringFormat=C}" Width="*"/>
+                <DataGridTextColumn Header="Ürün Sayısı" Binding="{Binding OrderDetails.Count}" Width="Auto"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>

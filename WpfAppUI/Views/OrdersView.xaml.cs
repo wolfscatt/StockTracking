@@ -1,6 +1,4 @@
-﻿using Autofac;
-using Business.Abstract;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,19 +10,21 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WpfAppUI.ViewModels;
 
 namespace WpfAppUI.Views
 {
     /// <summary>
-    /// Interaction logic for ProductView.xaml
+    /// Interaction logic for OrdersView.xaml
     /// </summary>
-    public partial class ProductView : UserControl
+    public partial class OrdersView : UserControl
     {
-        public ProductView()
+        public OrdersView()
         {
             InitializeComponent();
+            DataContext = new OrdersViewModel();
         }
     }
 }

@@ -25,7 +25,6 @@ namespace Business.Concrete.Managers
     public class ProductManager : IProductService
     {
         private IProductDal _productDal;
-        //private ICategoryService _categoryService;
 
         public ProductManager(IProductDal productDal)
         {
@@ -65,8 +64,7 @@ namespace Business.Concrete.Managers
         [CacheAspect()]
         public IDataResult<List<Product>> GetList()
         {
-            Thread.Sleep(5000);
-            return new SuccessDataResult<List<Product>>(_productDal.GetAll().ToList());
+            return new SuccessDataResult<List<Product>>(_productDal.GetAllWithInclude(p => p.Category).ToList());
         }
 
         [LogAspect(typeof(FileLogger))]

@@ -15,7 +15,6 @@ namespace DataAccess.Concrete.NHibarnate.Mappings
             Map(x => x.FullName).Column("FullName");
             Map(x => x.Role).Column("Role");
             Map(x => x.Email).Column("Email");
-            Map(x => x.CreatedDate).Column("CreatedDate");
         }
     }
 }

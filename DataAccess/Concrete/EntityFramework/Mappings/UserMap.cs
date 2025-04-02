@@ -21,7 +21,16 @@ namespace DataAccess.Concrete.EntityFramework.Mappings
             builder.Property(u => u.FullName).HasColumnName("FullName");
             builder.Property(u => u.Role).HasColumnName("Role");
             builder.Property(u => u.Email).HasColumnName("Email");
-            builder.Property(u => u.CreatedDate).HasColumnName("CreatedDate");
+
+            builder.HasData(new User
+            {
+                UserId = 1,
+                Username = "admin",
+                Password = "admin",
+                FullName = "Ömer Faruk",
+                Role = "Admin",
+                Email = "tufar220@gmail.com",
+            });
         }
     }
 }

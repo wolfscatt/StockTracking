@@ -11,7 +11,7 @@ using WpfAppUI.Views;
 
 namespace WpfAppUI.ViewModels
 {
-    public class MainViewModel : BaseViewModel
+    public class MainViewModel : ViewModelBase
     {
         public ObservableCollection<PageItem> Pages { get; set; }
         private UserControl _currentView;
@@ -32,6 +32,7 @@ namespace WpfAppUI.ViewModels
             {
                 new PageItem { Title = "Anasayfa", Icon = "Home", ViewName = "HomeView" },
                 new PageItem { Title = "Ürünler", Icon = "Cart", ViewName = "ProductsView" },
+                new PageItem { Title = "Siparişler", Icon = "Archive", ViewName = "OrdersView" },
                 new PageItem { Title = "Ayarlar", Icon = "Cog", ViewName = "SettingsView" }
                 // Yeni bir Navigation ekleneceği zaman buraya bir pageitem eklenir
             };
@@ -49,7 +50,10 @@ namespace WpfAppUI.ViewModels
                     CurrentView = new HomeView();
                     break;
                 case "ProductsView":
-                    CurrentView = new ProductView();
+                    CurrentView = new ProductsView();
+                    break;
+                case "OrdersView":
+                    CurrentView = new OrdersView();
                     break;
                 case "SettingsView":
                     CurrentView = new SettingsView();
